@@ -2,6 +2,8 @@ package com.quary.soa.webapp.books;
 
 import com.quary.soa.api.entity.Rental;
 import com.quary.soa.api.service.IRentalsService;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.log.Log;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,6 +12,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
@@ -22,6 +26,8 @@ public class RentalsView implements Serializable {
 
     private Rental selectedRental;
 
+    private DataTable dataTable;
+
     @PostConstruct
     public void init() {
         rentals = rentalsService.getAllRentals();
@@ -31,6 +37,11 @@ public class RentalsView implements Serializable {
         rentalsService.removeRental(selectedRental);
         rentals.remove(selectedRental);
         selectedRental = null;
+    }
+
+    public void onFilter() {
+        Map<String, Object> filters = dataTable.getFilters();
+        rentals = rentalsService.getAllWithFilters(filters);
     }
 
     public IRentalsService getRentalsService() {
@@ -55,5 +66,13 @@ public class RentalsView implements Serializable {
 
     public void setSelectedRental(Rental selectedRental) {
         this.selectedRental = selectedRental;
+    }
+
+    public DataTable getDataTable() {
+        return dataTable;
+    }
+
+    public void setDataTable(DataTable dataTable) {
+        this.dataTable = dataTable;
     }
 }
