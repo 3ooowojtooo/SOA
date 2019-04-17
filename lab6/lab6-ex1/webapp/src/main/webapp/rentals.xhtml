@@ -13,47 +13,49 @@
         <p:growl id="msgs" showDetail="true"/>
         <p:dataTable id="rentalsDataTable" var="rental" widgetVar="rentalsDataTable" sortBy="#{rental.id}" rowKey="#{rental.id}"
                      value="#{rentalsView.rentals}" emptyMessage="No books found." editable="true"
-                     selectionMode="single" selection="#{rentalsView.selectedRental}">
+                     selectionMode="single" selection="#{rentalsView.selectedRental}" binding="#{rentalsView.dataTable}">
 
-            <p:column headerText="Rental Id">
+            <p:ajax event="filter" listener="#{rentalsView.onFilter}" update="rentalsDataTable"/>
+
+            <p:column headerText="Rental Id" field="rentalId" filterBy="#{rental.id}">
                 <h:outputText value="#{rental.id}"/>
             </p:column>
 
-            <p:column headerText="Book id">
+            <p:column headerText="Book id" field="bookId" filterBy="#{rental.book.id}">
                 <h:outputText value="#{rental.book.id}"/>
             </p:column>
 
-            <p:column headerText="Book title">
+            <p:column headerText="Book title" field="bookTitle" filterBy="#{rental.book.title}">
                 <h:outputText value="#{rental.book.title}"/>
             </p:column>
 
-            <p:column headerText="Author first name">
+            <p:column headerText="Author first name" field="authorFirstName" filterBy="#{rental.book.author.firstName}">
                 <h:outputText value="#{rental.book.author.firstName}"/>
             </p:column>
 
-            <p:column headerText="Author last name">
+            <p:column headerText="Author last name" field="authorLastName" filterBy="#{rental.book.author.lastName}">
                 <h:outputText value="#{rental.book.author.lastName}"/>
             </p:column>
 
-            <p:column headerText="Reader id">
+            <p:column headerText="Reader id" field="readerId" filterBy="#{rental.reader.id}">
                 <h:outputText value="#{rental.reader.id}"/>
             </p:column>
 
-            <p:column headerText="Reader first name">
+            <p:column headerText="Reader first name" field="readerFirstName" filterBy="#{rental.reader.firstName}">
                 <h:outputText value="#{rental.reader.firstName}"/>
             </p:column>
 
-            <p:column headerText="Reader last name">
+            <p:column headerText="Reader last name" field="readerLastName" filterBy="#{rental.reader.lastName}">
                 <h:outputText value="#{rental.reader.lastName}"/>
             </p:column>
 
-            <p:column headerText="Start date">
+            <p:column headerText="Start date" field="rentalStartDate" filterBy="#{rental.startDate}">
                 <h:outputText value="#{rental.startDate}">
                     <f:converter converterId="dateConverter"/>
                 </h:outputText>
             </p:column>
 
-            <p:column headerText="End date">
+            <p:column headerText="End date" field="rentalEndDate" filterBy="#{rental.endDate}">
                 <h:outputText value="#{rental.endDate}">
                     <f:converter converterId="dateConverter"/>
                 </h:outputText>
@@ -61,6 +63,7 @@
         </p:dataTable>
         <p:contextMenu for="rentalsDataTable">
             <p:menuitem value="Rmove" update="rentalsDataTable" action="#{rentalsView.onRentalRemove}"/>
+            <p:menuitem value="Filter" update="rentalsDataTable" action="#{rentalsView.onFilter}"/>
         </p:contextMenu>
     </h:form>
 

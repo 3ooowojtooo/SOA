@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import java.util.List;
+import java.util.Map;
 
 @Singleton
 @Remote(IRentalsServiceRemote.class)
@@ -38,6 +39,11 @@ public class RentalsService implements IRentalsService {
         book.setAmount(book.getAmount() + 1);
         booksDAO.merge(book);
         rentalsDAO.remove(rental);
+    }
+
+    @Override
+    public List<Rental> getAllWithFilters(Map<String, Object> filters) {
+        return rentalsDAO.findWithFilters(filters);
     }
 
     public IRentalsDAO getRentalsDAO() {
